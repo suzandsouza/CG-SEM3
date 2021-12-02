@@ -1,51 +1,47 @@
-//Implementation of Bresenham line drawing algorithm
-#include <stdlib.h>
-#include<math.h>
-void lineBres(int x0,int y0,int xEnd,int yEnd)
-{
-    int dx=fabs(xEnd-x0), dy=fabs(yEnd-y0);
-    int p=2*dy-dx;
-    int twoDy=2*dy, twoDyMinusdx=2*(dy-dx);
-    int x,y;
-    if(x0>xEnd)
-    {
-        x=xEnd;
-        y=yEnd;
-        xEnd=x0;
-    }
-    else{
-        x=x0;
-        y=y0;
-    }
-    putPixel(x,y);
-    while(x<xEnd)
-    {
-        x++;
-        if(p<0)
-            p+=twoDy;
-        else
-        {
-            y++;
-            p=+twoDyMinusdx;
-        }
-        putPixel(x,y);
-    }
-}
-
+#include <stdio.h>
+#include <graphics.h>
+#include <conio.h>
+#include <math.h>
 
 int main()
 {
+    int x[4],y[4],i;
+    double put_x,put_y,t;
     int gd=DETECT,gm=DETECT;
-    int x0,y0,xEnd,yEnd;
+    printf("\n-------Bezier Curve Program--------");
 
-    printf("Enter the coordiantes x1,y1");
-    scanf("%d%d",&x0,&y0);
+    printf("\n Please enter x and y cooridinates\n\n ");
+{
 
-    printf("Enter the coordiantes x2,y2");
-    scanf("%d%d",&xEnd,&yEnd);
+    for(i=0;i<4;i++)
+    {
+        printf("x%dy%d:: ",i+1,i+1);
+        scanf("%d%d",&x[i],&y[i]);
 
-    initgraph(&gd,&gm," ");
-    lineBres(x0,y0,xEnd,yEnd);
-    return 0;
+    }
+    initgraph(&gd,&gm,"");
+    for(i=0;i<4;i++)
+    {
+
+        putpixel(x[i],y[i],3);
+
+    }
+
+
+    for(t=0.0;t<=1.0;t=t+0.001) //as value t lies between 0 and 1
+    {
+
+        put_x=pow(1-t,3)*x[0]+3*t*pow(1-t,2)*x[1]+3*t*t*(1-t)*x[2]+pow(t,3)* x[3];
+        //Formula to draw the curve
+        put_y=pow(1-t,3)*y[0]+3*t*pow(1-t,2)*y[1]+3*t*t*(1-t)*y[2] + pow(t,3)* y[3];
+        putpixel(put_x,put_y, WHITE);
+
+
+    }
+
+}
+    getch();
+    closegraph();
+
 
 }
